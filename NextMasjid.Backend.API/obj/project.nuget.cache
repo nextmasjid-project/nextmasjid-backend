@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "LxiUIzbCtneVzSQS8VApmHrB0/oslTPeyt78aBo/zopJFSnrNDCpMmhifv0HZqFbIG2kibMaeg6lIxLqcqbwzw==",
+  "success": true,
+  "projectFilePath": "/Users/waleed/Code/GitHub/nextmasjid-backend/NextMasjid.Backend.API/NextMasjid.Backend.API.csproj",
+  "expectedPackageFiles": [
+    "/Users/waleed/.nuget/packages/microsoft.extensions.apidescription.server/3.0.0/microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "/Users/waleed/.nuget/packages/microsoft.openapi/1.2.3/microsoft.openapi.1.2.3.nupkg.sha512",
+    "/Users/waleed/.nuget/packages/swashbuckle.aspnetcore/6.1.1/swashbuckle.aspnetcore.6.1.1.nupkg.sha512",
+    "/Users/waleed/.nuget/packages/swashbuckle.aspnetcore.swagger/6.1.1/swashbuckle.aspnetcore.swagger.6.1.1.nupkg.sha512",
+    "/Users/waleed/.nuget/packages/swashbuckle.aspnetcore.swaggergen/6.1.1/swashbuckle.aspnetcore.swaggergen.6.1.1.nupkg.sha512",
+    "/Users/waleed/.nuget/packages/swashbuckle.aspnetcore.swaggerui/6.1.1/swashbuckle.aspnetcore.swaggerui.6.1.1.nupkg.sha512",
+    "/Users/waleed/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+  ],
+  "logs": []
+}

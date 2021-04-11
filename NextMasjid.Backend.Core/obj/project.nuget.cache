@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "BnWpWczaA1x6LvCoovjEppugVeADsiGi+A7D9oAN1BPNUjBtUoc7wq44HgHg3IXroZpv2CAffeiML0yZTBgAQA==",
+  "success": true,
+  "projectFilePath": "/Users/waleed/Projects/NextMasjid.Backend.Core/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj",
+  "expectedPackageFiles": [
+    "/Users/waleed/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
+  ],
+  "logs": []
+}
