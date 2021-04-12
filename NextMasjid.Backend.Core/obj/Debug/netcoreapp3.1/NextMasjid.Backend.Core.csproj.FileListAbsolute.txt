@@ -15,3 +15,4 @@ C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Bac
 C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.csproj.CoreCompileInputs.cache
 C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.dll
 C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.pdb
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.csprojAssemblyReference.cache
