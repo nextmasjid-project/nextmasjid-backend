@@ -1,4 +1,4 @@
-name: .NET
+name: NextMasjid Backend API CI/CD (CICD.yml)
 
 on:
   push:
