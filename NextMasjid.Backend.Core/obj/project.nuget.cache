@@ -1,10 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BnWpWczaA1x6LvCoovjEppugVeADsiGi+A7D9oAN1BPNUjBtUoc7wq44HgHg3IXroZpv2CAffeiML0yZTBgAQA==",
+  "dgSpecHash": "HPcDg5OuobeiCDn/VUvvxcAGumTqb92DhWAKKoLLRXn4OVRnpgeM4ypiXCWiCbZwVbZYmbeAy9iCWWzMLLqH9w==",
   "success": true,
-  "projectFilePath": "/Users/waleed/Projects/NextMasjid.Backend.Core/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj",
-  "expectedPackageFiles": [
-    "/Users/waleed/.nuget/packages/microsoft.aspnetcore.app.ref/3.1.10/microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512"
-  ],
+  "projectFilePath": "C:\\Users\\tanve\\Source\\Repos\\nextmasjid-project\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj",
+  "expectedPackageFiles": [],
   "logs": []
 }

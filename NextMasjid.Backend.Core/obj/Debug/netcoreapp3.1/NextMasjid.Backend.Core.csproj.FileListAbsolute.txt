@@ -7,3 +7,11 @@
 /Users/waleed/Projects/NextMasjid.Backend.Core/NextMasjid.Backend.Core/obj/Debug/netcoreapp3.1/NextMasjid.Backend.Core.dll
 /Users/waleed/Projects/NextMasjid.Backend.Core/NextMasjid.Backend.Core/obj/Debug/netcoreapp3.1/NextMasjid.Backend.Core.pdb
 /Users/waleed/Projects/NextMasjid.Backend.Core/NextMasjid.Backend.Core/obj/Debug/netcoreapp3.1/NextMasjid.Backend.Core.csprojAssemblyReference.cache
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\bin\Debug\netcoreapp3.1\NextMasjid.Backend.Core.deps.json
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\bin\Debug\netcoreapp3.1\NextMasjid.Backend.Core.dll
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\bin\Debug\netcoreapp3.1\NextMasjid.Backend.Core.pdb
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.AssemblyInfoInputs.cache
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.AssemblyInfo.cs
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.csproj.CoreCompileInputs.cache
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.dll
+C:\Users\tanve\Source\Repos\nextmasjid-project\nextmasjid-backend\NextMasjid.Backend.Core\obj\Debug\netcoreapp3.1\NextMasjid.Backend.Core.pdb
