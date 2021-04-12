@@ -32,7 +32,7 @@ jobs:
         dotnet publish -c Release -o myapp 
 
     # Deploy to Azure Web apps
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
+    - name: 'Deploy To Azure App Service - nextmasjid-np-be'
       uses: azure/webapps-deploy@v2
       with: 
         app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
