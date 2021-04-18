@@ -1,0 +1,29 @@
+﻿<Properties StartupConfiguration="{BA1BFEE1-D3D7-4019-8B90-E0DC05C94654}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="NextMasjid.Backend.API/Controllers/ContactController.cs">
+    <Files>
+      <File FileName="NextMasjid.Backend.API/Controllers/MasjidController.cs" Line="21" Column="37" />
+      <File FileName="NextMasjid.Backend.API/Controllers/EditorChoiceController.cs" Line="16" Column="18" />
+      <File FileName="NextMasjid.Backend.API/Controllers/ContactController.cs" Line="15" Column="25" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="NextMasjid.Backend" expanded="True">
+            <Node name="NextMasjid.Backend.API" expanded="True">
+              <Node name="Controllers" expanded="True">
+                <Node name="ContactController.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.NextMasjid.Backend.API PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

@@ -218,34 +218,36 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\tanve\\.nuget\\packages\\": {}
+    "/Users/waleed/.nuget/packages/": {},
+    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\tanve\\Source\\Repos\\nextmasjid-project\\nextmasjid-backend\\NextMasjid.Backend.API\\NextMasjid.Backend.API.csproj",
+      "projectUniqueName": "/Users/waleed/Code/GitHub/backend/nextmasjid-backend/NextMasjid.Backend.API/NextMasjid.Backend.API.csproj",
       "projectName": "NextMasjid.Backend.API",
-      "projectPath": "C:\\Users\\tanve\\Source\\Repos\\nextmasjid-project\\nextmasjid-backend\\NextMasjid.Backend.API\\NextMasjid.Backend.API.csproj",
-      "packagesPath": "C:\\Users\\tanve\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\tanve\\Source\\Repos\\nextmasjid-project\\nextmasjid-backend\\NextMasjid.Backend.API\\obj\\",
+      "projectPath": "/Users/waleed/Code/GitHub/backend/nextmasjid-backend/NextMasjid.Backend.API/NextMasjid.Backend.API.csproj",
+      "packagesPath": "/Users/waleed/.nuget/packages/",
+      "outputPath": "/Users/waleed/Code/GitHub/backend/nextmasjid-backend/NextMasjid.Backend.API/obj/",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\tanve\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/waleed/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "C:\\Users\\tanve\\Source\\Repos\\nextmasjid-project\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj": {
-              "projectPath": "C:\\Users\\tanve\\Source\\Repos\\nextmasjid-project\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj"
+            "/Users/waleed/Code/GitHub/backend/nextmasjid-backend/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj": {
+              "projectPath": "/Users/waleed/Code/GitHub/backend/nextmasjid-backend/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj"
             }
           }
         }
@@ -287,6 +289,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -295,7 +303,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.102/RuntimeIdentifierGraph.json"
       }
     }
   }
