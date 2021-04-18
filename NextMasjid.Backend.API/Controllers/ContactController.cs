@@ -13,7 +13,7 @@ namespace NextMasjid.Backend.API.Controllers
 {
     [ApiController]
     [Route("contact")]
-    public class ContactConttroller : BaseController<ContactConttroller>
+    public class ContactController : BaseController<ContactController>
     {
         [HttpPost("submit")]
         public IActionResult Submit([FromForm] ContactModel contact)
