@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using NextMasjid.Backend.API.Models;
 using System.Linq;
@@ -23,10 +24,10 @@ namespace NextMasjid.Backend.API.Controllers
             //var subScores70 = Core.Score.SearchAreaFast(Scores, new Core.GeoPoint(swLat, swLng), new Core.GeoPoint(neLat, neLng), 32).Where(s => s.Value >= 70 && s.Value < 80);
             var subScoresElse = Core.Score.SearchAreaFast(Scores, new Core.GeoPoint(swLat, swLng), new Core.GeoPoint(neLat, neLng), 32 * step).Where(s => s.Value <70 );
 
-            var result90 = subScores90.Select(s => new ScoreModel() { Lat = ((double)s.Key.Item1 / 10000), Lng = ((double)s.Key.Item2 / 10000), Value = s.Value });
-            var result80 = subScores80.Select(s => new ScoreModel() { Lat = ((double)s.Key.Item1 / 10000), Lng = ((double)s.Key.Item2 / 10000), Value = s.Value });
+            var result90 = subScores90.Select(s => new ScoreModel() { Lat = ((decimal)s.Key.Item1 / 10000), Lng = ((decimal)s.Key.Item2 / 10000), Value = s.Value });
+            var result80 = subScores80.Select(s => new ScoreModel() { Lat = ((decimal)s.Key.Item1 / 10000), Lng = ((decimal)s.Key.Item2 / 10000), Value = s.Value });
             //var result70 = subScores70.Select(s => new ScoreModel() { Lat = ((double)s.Key.Item1 / 10000), Lng = ((double)s.Key.Item2 / 10000), Value = s.Value });
-            var resultsElse = subScoresElse.Select(s => new ScoreModel() { Lat = ((double)s.Key.Item1 / 10000), Lng = ((double)s.Key.Item2 / 10000), Value = s.Value });
+            var resultsElse = subScoresElse.Select(s => new ScoreModel() { Lat = ((decimal)s.Key.Item1 / 10000), Lng = ((decimal)s.Key.Item2 / 10000), Value = s.Value });
 
             var result = new List<ScoreModel>();
             result.AddRange(result90);
@@ -51,11 +52,11 @@ namespace NextMasjid.Backend.API.Controllers
         [HttpGet("byPoint/{lat}/{lng}")]
         public ScoreModel Get(double lat, double lng)
         {
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
             int value = Backend.Core.Score.SearchPoint(Scores, new Core.GeoPoint(lat, lng));
-            stopwatch.Stop();
-            return new ScoreModel() { Lat = lat, Lng = lng, Value = value };
+            decimal nLat = (int)(lat * 10000) / (decimal)10000;
+            decimal nLng = (int)(lng * 10000) / (decimal)10000;
+
+            return new ScoreModel() { Lat =  nLat, Lng = nLng, Value = value };
         }
 
 
@@ -63,7 +64,49 @@ namespace NextMasjid.Backend.API.Controllers
         public ScoreDetailedModel Get(string lang, double lat, double lng)
         {
             int value = Backend.Core.Score.SearchPoint(Scores, new Core.GeoPoint(lat, lng));
-            return new ScoreDetailedModel() { Lat = lat, Lng = lng, Value = value, ExpectedPrayers = 1, MosqueDensity = 1, PopulationDensity = 1, NearestMosqueDistance = 100 };
+
+            decimal nLat = (int)(lat * 10000) / (decimal)10000;
+            decimal nLng = (int)(lng * 10000) / (decimal)10000;
+
+
+            // get city where the
+
+            var city = Provinces.SelectMany(p => p.Cities).FirstOrDefault(c => c.Polygons.First().Contains(lat, lng));
+
+            // get nearest 3 mosuqes
+            var nearestMasjids = Core.Masjid.GetMasjidsDistanceToLatLng(Masjids.Where(m => m.CityID == city.CityID), lat, lng);
+
+
+            while(nearestMasjids.Count < 3)
+            {
+                nearestMasjids.Add(new Core.Masjid() { Name = "لايوجد" }, 0);
+            }
+
+            string density = "عالية";
+            if (city.RankInDensity == 1)
+                density = "منخفضة";
+            else if (city.RankInDensity == 2 || city.RankInDensity == 3)
+                density = "متوسطة";
+            
+
+            return new ScoreDetailedModel()
+            {
+                Lat = nLat,
+                Lng = nLng,
+                Value = value,
+                ExpectedPrayers = "غير متوفر حالياً", // based on distance from nearest mosquee 
+                MosqueDensity = Convert.ToDecimal( nearestMasjids.Count * 1000 / city.Population).ToString("#.##"),
+                PopulationDensity = density,
+                NearestMosqueDistance = nearestMasjids.First().Value.ToString(),
+
+                FirstNearestMasjidName = nearestMasjids.First().Key.Name,
+                SecondNearestMasjidName = nearestMasjids.Skip(1).First().Key.Name,
+                ThirdNearestMasjidName = nearestMasjids.Skip(2).First().Key.Name,
+
+                FirstNearestMasjidDistance = nearestMasjids.First().Value.ToString(),
+                SecondNearestMasjidDistance = nearestMasjids.Skip(1).First().Value.ToString(),
+                ThirdNearestMasjidDistance = nearestMasjids.Skip(2).First().Value.ToString()
+            };
         }
     }
 }

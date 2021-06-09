@@ -30,8 +30,8 @@ namespace NextMasjid.Backend.API.Models
 
     public class ScoreModel
     {
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+        public decimal Lat { get; set; }
+        public decimal Lng { get; set; }
         public int Value { get; set; }
     }
 
@@ -48,15 +48,15 @@ namespace NextMasjid.Backend.API.Models
     {
 
 
-        public double Lat { get; set; }
-        public double Lng { get; set; }
+        public decimal Lat { get; set; }
+        public decimal Lng { get; set; }
 
         public int Value { get; set; }
 
-        public double MosqueDensity { get; set; }
-        public double ExpectedPrayers { get; set; }
-        public double PopulationDensity { get; set; }
-        public double NearestMosqueDistance { get; set; }
+        public string MosqueDensity { get; set; }
+        public string ExpectedPrayers { get; set; }
+        public string PopulationDensity { get; set; }
+        public string NearestMosqueDistance { get; set; }
 
         public string FirstNearestMasjidName { get; set; }
         public string FirstNearestMasjidDistance { get; set; }

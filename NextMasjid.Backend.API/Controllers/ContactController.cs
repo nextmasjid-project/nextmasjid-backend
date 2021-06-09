@@ -15,12 +15,12 @@ namespace NextMasjid.Backend.API.Controllers
     [Route("contact")]
     public class ContactController : BaseController<ContactController>
     {
-        [HttpPost("submit")]
-        public IActionResult Submit([FromForm] ContactModel contact)
-        {
-            // todo send email
-            return CreatedAtAction("", new { });
-        }
+        //[HttpPost("submit")]
+        //public IActionResult Submit([FromForm] ContactModel contact)
+        //{
+        //    // todo send email
+        //    return CreatedAtAction("", new { });
+        //}
     }
 
     public class ContactModel

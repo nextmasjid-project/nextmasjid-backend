@@ -75,6 +75,15 @@ namespace NextMasjid.Backend.Core.Util
             return 2 * Math.Atan2(t * Math.Sin(deltaLng), 1 + t * Math.Cos(deltaLng));
         }
 
+
+        /// <summary>
+        /// Using Meters, calculate distance between 2 points
+        /// </summary>
+        /// <param name="lt1"></param>
+        /// <param name="ln1"></param>
+        /// <param name="lt2"></param>
+        /// <param name="ln2"></param>
+        /// <returns></returns>
         public static double CalculateDistanceFast(double lt1, double ln1, double lt2, double ln2)
         {
             var x = lt2 - lt1;
