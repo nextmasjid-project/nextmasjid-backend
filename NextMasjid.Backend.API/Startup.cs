@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using NextMasjid.Backend.Core;
+using NextMasjid.Backend.Core.Data;
 
 namespace NextMasjid.Backend.API
 {
     public class Startup
     {
-
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,6 +27,9 @@ namespace NextMasjid.Backend.API
 
             services.AddSwaggerGen();
 
+            services.AddSingleton(new DbConnectionStringSupplier(Configuration["scoresDbPath"]));
+            services.AddDbContext<ScoreContext>(options => options.UseSqlite());
+
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => {
@@ -39,13 +37,14 @@ namespace NextMasjid.Backend.API
                     options.AllowAnyMethod();
                     options.AllowAnyHeader();
                 });
-
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ScoreContext context, DbConnectionStringSupplier connectionStringSupplier)
         {
+            EnsureDbCreated(context, connectionStringSupplier);
+
             app.UseSwagger();
 
             if (env.IsDevelopment())
@@ -56,7 +55,6 @@ namespace NextMasjid.Backend.API
             app.UseHttpsRedirection();
 
             app.UseCors("AllowOrigin");
-
 
             app.UseSwaggerUI(c =>
             {
@@ -71,6 +69,46 @@ namespace NextMasjid.Backend.API
             {
                 endpoints.MapControllers();
             });
+        }
+
+
+
+        private void EnsureDbCreated(ScoreContext context, DbConnectionStringSupplier dbConnectionStringSupplier)
+        {
+            context.Database.EnsureCreated();
+
+            //delete this if and the db to recreate
+            if (context.Scores.Any() == false)
+            {
+                SeedDb(dbConnectionStringSupplier);
+            }
+        }
+
+        private void SeedDb(DbConnectionStringSupplier dbConnectionStringSupplier)
+        {
+            var path = Configuration["scoresPath"];
+            var scores = DataReaderWriter.ReadScoresSegmented(path);
+
+            var idx = 0;
+            var page = 10000;
+
+            while (idx * page < scores.Count)
+            {
+                var context = new ScoreContext(dbConnectionStringSupplier);
+                context.ChangeTracker.AutoDetectChangesEnabled = false;
+
+                var elems = scores.Skip(page * idx).Take(page).Select(s => new ScoreModelDb { Lat = s.Key.Item1, Lng = s.Key.Item2, Value = s.Value }).ToArray();
+
+                context.Scores.AddRange(elems);
+
+                context.ChangeTracker.DetectChanges();
+                context.SaveChanges();
+                context.ChangeTracker.AutoDetectChangesEnabled = true;
+
+                context.Dispose();
+
+                ++idx;
+            }
         }
     }
 }

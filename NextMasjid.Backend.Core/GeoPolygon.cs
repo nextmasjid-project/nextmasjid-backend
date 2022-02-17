@@ -13,7 +13,6 @@ namespace NextMasjid.Backend.Core
 
         public bool IsNegativePolygon { get; set; }
 
-
         public GeoPoint[] Points { get; set; }
         public GeoPoint BottomLeft { get { return new GeoPoint() { Lat = Points.Min(p => p.Lat), Lng = Points.Min(p => p.Lng) }; } }
         public GeoPoint TopRight { get { return new GeoPoint() { Lat = Points.Max(p => p.Lat), Lng = Points.Max(p => p.Lng) }; } }

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using NextMasjid.Backend.API.Models;
+using NextMasjid.Backend.Core;
 
 namespace NextMasjid.Backend.API.Controllers
 {

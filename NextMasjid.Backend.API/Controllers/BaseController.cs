@@ -42,7 +42,7 @@ namespace NextMasjid.Backend.API.Controllers
         //Core. reportedMasjids = new List<Core.Masjid>();
         Core.Province[] provinces;
         Core.EditorChoice[] choices;
-        Dictionary<(int, int), int> scores;
+        //Dictionary<(int, int), int> scores;
 
         public Core.Masjid[] Masjids
         {
@@ -95,17 +95,17 @@ namespace NextMasjid.Backend.API.Controllers
             }
         }
 
-        public Dictionary<(int, int),int> Scores
-        {
-            get {
-                if (Memory.TryGetValue(scoreKey, out scores))
-                    return scores;
-                var path = Configuration["scoresPath"];
-                scores = DataReaderWriter.ReadScoresSegmented(path);
-                Memory.Set(scoreKey, scores);
-                return scores;
-            }
-        }
+        //public Dictionary<(int, int),int> Scores
+        //{
+        //    get {
+        //        if (Memory.TryGetValue(scoreKey, out scores))
+        //            return scores;
+        //        var path = Configuration["scoresPath"];
+        //        scores = DataReaderWriter.ReadScoresSegmented(path);
+        //        Memory.Set(scoreKey, scores);
+        //        return scores;
+        //    }
+        //}
 
         public Core.EditorChoice[] Choices
         {

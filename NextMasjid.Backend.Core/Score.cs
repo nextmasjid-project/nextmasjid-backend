@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NextMasjid.Backend.Core;
 using NextMasjid.Backend.Core.Util;
 
@@ -94,6 +95,8 @@ namespace NextMasjid.Backend.Core
 
             Dictionary<(int, int), int> result = new Dictionary<(int, int), int>();
 
+
+
             for (int lt = swLat; lt<neLat; lt += step )
             {
                 for(int ln = swLng; ln < neLng; ln += step)
@@ -103,9 +106,50 @@ namespace NextMasjid.Backend.Core
                 }
             }
             return result;
-
-       
         }
+
+        public static Dictionary<(int, int), int> SearchAreaFastSql(ScoreContext context, GeoPoint bottomLeft, GeoPoint topRight, int step = 2)
+        {
+            int swLat = (int)(bottomLeft.Lat * 10000);
+            int swLng = (int)(bottomLeft.Lng * 10000);
+            int neLat = (int)(topRight.Lat * 10000);
+            int neLng = (int)(topRight.Lng * 10000);
+
+            if (swLat % 2 == 1)
+                swLat += 1;
+            if (swLng % 2 == 1)
+                swLng += 1;
+            if (neLat % 2 == 1)
+                neLat += 1;
+            if (neLng % 2 == 1)
+                neLng += 1;
+
+            var data = context.Scores
+                                                 .Where(s => s.Lat >= swLat && s.Lat < neLat && s.Lng >= swLng && s.Lng < neLng)
+                                                 .AsNoTracking()
+                                                 .ToList()
+                                                 .ToDictionary(e => ((int)e.Lat * 10000, (int)e.Lng * 10000), e => e.Value);
+
+            return data;
+
+            //old code
+
+            //Dictionary<(int, int), int> result = new Dictionary<(int, int), int>();
+
+            //for (int lt = swLat; lt < neLat; lt += step)
+            //{
+            //    for (int ln = swLng; ln < neLng; ln += step)
+            //    {
+            //        var score = context.Scores.FirstOrDefault(e => e.Lat == lt && e.Lng == ln);
+
+            //        if (score != null)
+            //            result.TryAdd((lt, ln), score.Value);
+            //    }
+            //}
+
+            //return result;
+        }
+
 
         public static int SearchPoint(Dictionary<(int, int), int> data, GeoPoint point)
         {
@@ -135,6 +179,43 @@ namespace NextMasjid.Backend.Core
             
         }
 
+        public static int SearchPointSql(GeoPoint point, ScoreContext context)
+        {
+            var lat = (int)(point.Lat * 10000);
+            var lng = (int)(point.Lng * 10000);
+
+            var values = context.Scores.Where(e => e.Lat >= lat - 3 && e.Lat < lat + 3 && e.Lng >= lng - 3 && e.Lng < lng + 3)
+                                            .AsNoTracking()
+                                            .Select(e => e.Value)
+                                            .ToList();
+
+            int total = values.Sum();
+            int count = values.Count;
+
+            //old code
+
+            //int total = 0;
+            //int count = 0;
+
+            //for (int dlat = lat - 3; dlat < lat + 3; dlat += 1)
+            //{
+            //    for (int dlng = lng - 3; dlng < lng + 3; dlng += 1)
+            //    {
+            //        var result = context.Scores.FirstOrDefault(e => e.Lat == dlat && e.Lng == dlng);
+
+            //        if (result != null)
+            //        {
+            //            total += result.Value;
+            //            count += 1;
+            //        }
+            //    }
+            //}
+
+            if (count == 0)
+                return -1;
+
+            return total / count;
+        }
 
         public static Dictionary<(int, int), int> ComputeEntirePolygons(City[] cities, Masjid[] masjids, double step = 0.0002)
         {

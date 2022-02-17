@@ -27,7 +27,6 @@ namespace NextMasjid.Backend.Core.Data
             w.Flush();
             w.Close();
             fs.Close();
-
         }
 
         public static void WriteScoreSegmented(string folderPath, string namePrefix, Dictionary<(int, int), int> data, int every = 8 * 1000 * 1000)
@@ -49,7 +48,6 @@ namespace NextMasjid.Backend.Core.Data
 
             foreach (var filePatth in Directory.GetFiles(folderPath).Where(f => f.ToLower().EndsWith(".dat")))
             {
-
                 var file = File.ReadAllBytes(filePatth);
                 using var s = new MemoryStream(file);
                 using BinaryReader br = new BinaryReader(s);
@@ -63,9 +61,6 @@ namespace NextMasjid.Backend.Core.Data
             return result;
         }
  
-
-
-
         public static Dictionary<(int, int), int> ReadScores(string path)
         {
             Dictionary<(int, int), int> result = new Dictionary<(int, int), int>();
