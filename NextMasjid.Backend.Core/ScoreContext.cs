@@ -1,11 +1,10 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
+﻿using System.IO;
 using Microsoft.EntityFrameworkCore;
 namespace NextMasjid.Backend.Core
 {
     public class ScoreContext : DbContext
     {
+        public bool IsInMemory { get; set; }
         public DbSet<ScoreModelDb> Scores { get; set; }
 
         public string DbPath { get; set; }
@@ -13,6 +12,11 @@ namespace NextMasjid.Backend.Core
         public ScoreContext()
         {
 
+        }
+
+        public ScoreContext(bool isInMemory)
+        {
+            IsInMemory = isInMemory;
         }
 
         public ScoreContext(DbConnectionStringSupplier connectionStringSupplier) => RunConfiguration(connectionStringSupplier._connectionString);
@@ -25,7 +29,7 @@ namespace NextMasjid.Backend.Core
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
+            => options.UseSqlite( IsInMemory ? "Data Source=InMemorySample;Mode=Memory;Cache=Shared" : $"Data Source={DbPath}");
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

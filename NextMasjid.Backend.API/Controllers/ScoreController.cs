@@ -14,6 +14,7 @@ namespace NextMasjid.Backend.API.Controllers
         public ScoreController(ScoreContext scoreContext)
         {
             _scoreContext = scoreContext;
+            scoreContext.IsInMemory = true;
         }
 
         [HttpGet("byArea/{swLat}/{swLng}/{neLat}/{neLng}/{step}")]

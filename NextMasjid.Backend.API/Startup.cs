@@ -1,6 +1,8 @@
 using System.Linq;
+using EFCore.BulkExtensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,7 @@ namespace NextMasjid.Backend.API
 
             services.AddSingleton(new DbConnectionStringSupplier(Configuration["scoresDbPath"]));
             services.AddDbContext<ScoreContext>(options => options.UseSqlite());
+            services.AddSingleton(new MasterConnectionHolder());
 
             services.AddCors(c =>
             {
@@ -41,9 +44,13 @@ namespace NextMasjid.Backend.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ScoreContext context, DbConnectionStringSupplier connectionStringSupplier)
+        public void Configure(IApplicationBuilder app,
+            IWebHostEnvironment env,
+            ScoreContext context,
+            DbConnectionStringSupplier connectionStringSupplier,
+            MasterConnectionHolder masterConnectionHolder)
         {
-            EnsureDbCreated(context, connectionStringSupplier);
+            EnsureDbCreated(context, connectionStringSupplier, masterConnectionHolder);
 
             app.UseSwagger();
 
@@ -71,9 +78,8 @@ namespace NextMasjid.Backend.API
             });
         }
 
-
-
-        private void EnsureDbCreated(ScoreContext context, DbConnectionStringSupplier dbConnectionStringSupplier)
+        private void EnsureDbCreated(ScoreContext context, DbConnectionStringSupplier dbConnectionStringSupplier,
+            MasterConnectionHolder masterConnectionHolder)
         {
             context.Database.EnsureCreated();
 
@@ -82,6 +88,52 @@ namespace NextMasjid.Backend.API
             {
                 SeedDb(dbConnectionStringSupplier);
             }
+
+            LoadInMemory(dbConnectionStringSupplier, masterConnectionHolder);
+        }
+
+        private void LoadInMemory(DbConnectionStringSupplier dbConnectionStringSupplier, MasterConnectionHolder masterConnectionHolder)
+        {
+            int count;
+
+            using (var contextCount = new ScoreContext(dbConnectionStringSupplier))
+            {
+                count = contextCount.Scores.Count();
+            }
+
+            var idx = 0;
+            var page = 10000;
+
+            SetMasterConnection(masterConnectionHolder);
+
+            using (var contextCreate = new ScoreContext(true))
+            {
+                contextCreate.Database.EnsureCreated();
+            }
+
+            var contextRead = new ScoreContext(dbConnectionStringSupplier);
+
+            while (idx * page < count)
+            {
+                var elems = contextRead.Scores.Skip(page * idx).Take(page).AsNoTracking().ToArray();
+
+                using (var contextWrite = new ScoreContext(true))
+                {
+                    contextWrite.BulkInsert(elems);
+                    contextWrite.SaveChanges();
+                }
+
+                ++idx;
+            }
+        }
+
+        private static void SetMasterConnection(MasterConnectionHolder masterConnectionHolder)
+        {
+            const string connectionString = "Data Source=InMemorySample;Mode=Memory;Cache=Shared";
+            var masterConnection = new SqliteConnection(connectionString);
+            masterConnection.Open();
+
+            masterConnectionHolder.MasterConnection = masterConnection;
         }
 
         private void SeedDb(DbConnectionStringSupplier dbConnectionStringSupplier)
@@ -94,18 +146,13 @@ namespace NextMasjid.Backend.API
 
             while (idx * page < scores.Count)
             {
-                var context = new ScoreContext(dbConnectionStringSupplier);
-                context.ChangeTracker.AutoDetectChangesEnabled = false;
+                using (var context = new ScoreContext(dbConnectionStringSupplier))
+                {
+                    var elems = scores.Skip(page * idx).Take(page).Select(s => new ScoreModelDb { Lat = s.Key.Item1, Lng = s.Key.Item2, Value = s.Value }).ToArray();
 
-                var elems = scores.Skip(page * idx).Take(page).Select(s => new ScoreModelDb { Lat = s.Key.Item1, Lng = s.Key.Item2, Value = s.Value }).ToArray();
-
-                context.Scores.AddRange(elems);
-
-                context.ChangeTracker.DetectChanges();
-                context.SaveChanges();
-                context.ChangeTracker.AutoDetectChangesEnabled = true;
-
-                context.Dispose();
+                    context.BulkInsert(elems);
+                    context.SaveChanges();
+                }
 
                 ++idx;
             }

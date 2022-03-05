@@ -124,30 +124,31 @@ namespace NextMasjid.Backend.Core
             if (neLng % 2 == 1)
                 neLng += 1;
 
-            var data = context.Scores
-                                                 .Where(s => s.Lat >= swLat && s.Lat < neLat && s.Lng >= swLng && s.Lng < neLng)
-                                                 .AsNoTracking()
-                                                 .ToList()
-                                                 .ToDictionary(e => ((int)e.Lat * 10000, (int)e.Lng * 10000), e => e.Value);
+            //var data = context.Scores
+            //                                     .Where(s => s.Lat >= swLat && s.Lat < neLat && s.Lng >= swLng && s.Lng < neLng)
+            //                                     .AsNoTracking()
+            //                                     .ToList()
+            //                                     .ToDictionary(e => ((int)e.Lat * 10000, (int)e.Lng * 10000), e => e.Value);
 
-            return data;
+            //return data;
 
             //old code
 
-            //Dictionary<(int, int), int> result = new Dictionary<(int, int), int>();
+            Dictionary<(int, int), int> result = new Dictionary<(int, int), int>();
 
-            //for (int lt = swLat; lt < neLat; lt += step)
-            //{
-            //    for (int ln = swLng; ln < neLng; ln += step)
-            //    {
-            //        var score = context.Scores.FirstOrDefault(e => e.Lat == lt && e.Lng == ln);
+            for (int lt = swLat; lt < neLat; lt += step)
+            {
+                for (int ln = swLng; ln < neLng; ln += step)
+                {
+                    //LOOK AT THIS 
+                    var score = context.Scores.FirstOrDefault(e => e.Lat == lt && e.Lng == ln);
 
-            //        if (score != null)
-            //            result.TryAdd((lt, ln), score.Value);
-            //    }
-            //}
+                    if (score != null)
+                        result.TryAdd((lt, ln), score.Value);
+                }
+            }
 
-            //return result;
+            return result;
         }
 
 
@@ -184,32 +185,33 @@ namespace NextMasjid.Backend.Core
             var lat = (int)(point.Lat * 10000);
             var lng = (int)(point.Lng * 10000);
 
-            var values = context.Scores.Where(e => e.Lat >= lat - 3 && e.Lat < lat + 3 && e.Lng >= lng - 3 && e.Lng < lng + 3)
-                                            .AsNoTracking()
-                                            .Select(e => e.Value)
-                                            .ToList();
+            //var values = context.Scores.Where(e => e.Lat >= lat - 3 && e.Lat < lat + 3 && e.Lng >= lng - 3 && e.Lng < lng + 3)
+            //                                .AsNoTracking()
+            //                                .Select(e => e.Value)
+            //                                .ToList();
 
-            int total = values.Sum();
-            int count = values.Count;
+            //int total = values.Sum();
+            //int count = values.Count;
 
             //old code
 
-            //int total = 0;
-            //int count = 0;
+            int total = 0;
+            int count = 0;
 
-            //for (int dlat = lat - 3; dlat < lat + 3; dlat += 1)
-            //{
-            //    for (int dlng = lng - 3; dlng < lng + 3; dlng += 1)
-            //    {
-            //        var result = context.Scores.FirstOrDefault(e => e.Lat == dlat && e.Lng == dlng);
+            for (int dlat = lat - 3; dlat < lat + 3; dlat += 1)
+            {
+                for (int dlng = lng - 3; dlng < lng + 3; dlng += 1)
+                {
+                    //LOOK AT THIS 
+                    var result = context.Scores.FirstOrDefault(e => e.Lat == dlat && e.Lng == dlng);
 
-            //        if (result != null)
-            //        {
-            //            total += result.Value;
-            //            count += 1;
-            //        }
-            //    }
-            //}
+                    if (result != null)
+                    {
+                        total += result.Value;
+                        count += 1;
+                    }
+                }
+            }
 
             if (count == 0)
                 return -1;
