@@ -60,7 +60,7 @@ jobs:
             fi
             docker system prune -af      
             docker-compose -f /tmp/docker-compose.yml up -d $SERVICE_NAME          
-            rm -rf /tmp/docker-compose.yml*
+            rm -rf /tmp/docker-compose.yml
     
          
       
