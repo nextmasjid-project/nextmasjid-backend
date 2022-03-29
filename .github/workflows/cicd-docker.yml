@@ -1,0 +1,71 @@
+name: Deploy the backend container 
+
+on:
+  push:    
+    tags:     # Only run when a new tag is pushed to the repository
+      - 'v*'  
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  CONTAINER_NAME: backend-container
+  SERVICE_NAME: backend
+
+jobs:  
+  build_and_push:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    
+    steps:       
+      - uses: actions/checkout@v2
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+                      
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:          
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}  
+        
+      - name: Get the version
+        id: tag
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:          
+          context: .
+          file: ./docker/Dockerfile
+          registry: ${{ env.REGISTRY }}
+          push: true          
+          tags: nextmasjiddocker/nextmasjid-backend:${{ steps.tag.outputs.VERSION }}, nextmasjiddocker/nextmasjid-backend:latest  
+
+      - name: Deploy the new image        
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: CONTAINER_NAME, SERVICE_NAME
+          script: |
+            wget -L https://raw.githubusercontent.com/nextmasjid-project/nextmasjid-frontend/main/docker/docker-compose.yml -P /tmp/
+            RESULT=$(docker container ps -q -f name=$CONTAINER_NAME)
+            if [[ ! -z $RESULT ]]; then             
+              docker-compose -f /tmp/docker-compose.yml rm -svf $SERVICE_NAME 
+            fi
+            docker system prune -af      
+            docker-compose -f /tmp/docker-compose.yml up -d $SERVICE_NAME          
+            rm -rf /tmp/docker-compose.yml*
+    
+         
+      
+
+
+          
+            
+          

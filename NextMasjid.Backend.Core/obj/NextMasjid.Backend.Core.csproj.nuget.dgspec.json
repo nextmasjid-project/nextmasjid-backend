@@ -1,27 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Lopez\\Desktop\\mosqueNet\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj": {}
+    "/Users/waleed/Work/Refaah/NextMasjid Code/nextmasjid-backend/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Lopez\\Desktop\\mosqueNet\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj": {
+    "/Users/waleed/Work/Refaah/NextMasjid Code/nextmasjid-backend/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Lopez\\Desktop\\mosqueNet\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj",
+        "projectUniqueName": "/Users/waleed/Work/Refaah/NextMasjid Code/nextmasjid-backend/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj",
         "projectName": "NextMasjid.Backend.Core",
-        "projectPath": "C:\\Users\\Lopez\\Desktop\\mosqueNet\\nextmasjid-backend\\NextMasjid.Backend.Core\\NextMasjid.Backend.Core.csproj",
-        "packagesPath": "C:\\Users\\Lopez\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Lopez\\Desktop\\mosqueNet\\nextmasjid-backend\\NextMasjid.Backend.Core\\obj\\",
+        "projectPath": "/Users/waleed/Work/Refaah/NextMasjid Code/nextmasjid-backend/NextMasjid.Backend.Core/NextMasjid.Backend.Core.csproj",
+        "packagesPath": "/Users/waleed/.nuget/packages/",
+        "outputPath": "/Users/waleed/Work/Refaah/NextMasjid Code/nextmasjid-backend/NextMasjid.Backend.Core/obj/",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Lopez\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/waleed/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -40,6 +41,10 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "EFCore.BulkExtensions": {
+              "target": "Package",
+              "version": "[5.4.2, )"
+            },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
@@ -61,12 +66,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.100/RuntimeIdentifierGraph.json"
         }
       }
     }

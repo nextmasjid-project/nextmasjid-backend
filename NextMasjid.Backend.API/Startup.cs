@@ -50,7 +50,7 @@ namespace NextMasjid.Backend.API
             DbConnectionStringSupplier connectionStringSupplier,
             MasterConnectionHolder masterConnectionHolder)
         {
-            EnsureDbCreated(context, connectionStringSupplier, masterConnectionHolder);
+        //    EnsureDbCreated(context, connectionStringSupplier, masterConnectionHolder);
 
             app.UseSwagger();
 

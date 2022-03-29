@@ -11,24 +11,39 @@ namespace NextMasjid.Backend.API.Controllers
     public class ScoreController : BaseController<ScoreController>
     {
         private readonly ScoreContext _scoreContext;
-        public ScoreController(ScoreContext scoreContext)
-        {
-            _scoreContext = scoreContext;
-            scoreContext.IsInMemory = true;
-        }
+        //public ScoreController(ScoreContext scoreContext)
+        //{
+        //    _scoreContext = scoreContext;
+        //    scoreContext.IsInMemory = true;
+        //}
 
         [HttpGet("byArea/{swLat}/{swLng}/{neLat}/{neLng}/{step}")]
         public IEnumerable<ScoreModel> Get(double swLat, double swLng, double neLat, double neLng, int step)
         {
 
+   
+            var sw = new Core.GeoPoint(swLat, swLng);
+            var ne = new Core.GeoPoint(neLat, neLng);
+
+            var _step = step;
+            step = estimateStepSize(sw, ne);
+
+            if (step > 1000)
+                step = 1000;
+
+            //Console.WriteLine("Instered Step:" + _step + " & Calculated: " + step);
+
+
             if (step < 1)
                 step = 1;
 
+    //        stopwatch.Start();
+
             // dual step
-            var subScores90 = Core.Score.SearchAreaFastSql(_scoreContext, new Core.GeoPoint(swLat, swLng), new Core.GeoPoint(neLat, neLng), 2 * step).Where(s => s.Value >= 85);
-            var subScores80 = Core.Score.SearchAreaFastSql(_scoreContext, new Core.GeoPoint(swLat, swLng), new Core.GeoPoint(neLat, neLng), 4 * step).Where(s => s.Value >= 70 && s.Value < 85);
+            var subScores90 = Core.Score.SearchAreaFast(Scores, sw, ne, step).Where(s => s.Value >= 85);
+            var subScores80 = Core.Score.SearchAreaFast(Scores, sw, ne, 2 * step).Where(s => s.Value >= 70 && s.Value < 85);
             //var subScores70 = Core.Score.SearchAreaFast(Scores, new Core.GeoPoint(swLat, swLng), new Core.GeoPoint(neLat, neLng), 32).Where(s => s.Value >= 70 && s.Value < 80);
-            var subScoresElse = Core.Score.SearchAreaFastSql(_scoreContext, new Core.GeoPoint(swLat, swLng), new Core.GeoPoint(neLat, neLng), 32 * step).Where(s => s.Value <70 );
+            var subScoresElse = Core.Score.SearchAreaFast(Scores, sw, ne, 16 * step).Where(s => s.Value < 70);
 
             var result90 = subScores90.Select(s => new ScoreModel() { Lat = ((decimal)s.Key.Item1 / 10000), Lng = ((decimal)s.Key.Item2 / 10000), Value = s.Value });
             var result80 = subScores80.Select(s => new ScoreModel() { Lat = ((decimal)s.Key.Item1 / 10000), Lng = ((decimal)s.Key.Item2 / 10000), Value = s.Value });
@@ -41,7 +56,30 @@ namespace NextMasjid.Backend.API.Controllers
             //result.AddRange(result70);
             result.AddRange(resultsElse);
 
+      //      stopwatch.Stop();
+      
+      //      Console.WriteLine("Query took: " + stopwatch.ElapsedMilliseconds + " & Total points: " + result.Count);
+          
             return result;
+
+        }
+
+        private int estimateStepSize(GeoPoint sw, GeoPoint ne)
+        {
+            int factor = 40;
+            int swLat = (int)(sw.Lat * 10000);
+            int swLng = (int)(sw.Lng * 10000);
+            int neLat = (int)(ne.Lat * 10000);
+            int neLng = (int)(ne.Lng * 10000);
+
+
+            if ((neLat - swLat) > (neLng - swLng))
+            {
+                // divide in lng
+                return (neLng - swLng) / factor;
+            }
+            else
+                return (neLat - swLat) / factor;
 
         }
 
@@ -58,8 +96,8 @@ namespace NextMasjid.Backend.API.Controllers
         [HttpGet("byPoint/{lat}/{lng}")]
         public ScoreModel Get(double lat, double lng)
         {
-            int value = Backend.Core.Score.SearchPointSql(new Core.GeoPoint(lat, lng), _scoreContext);
-
+            //int value = Backend.Core.Score.SearchPointSql(new Core.GeoPoint(lat, lng), _scoreContext);
+            int value = Backend.Core.Score.SearchPoint(Scores, new Core.GeoPoint(lat, lng));
             decimal nLat = (int)(lat * 10000) / (decimal)10000;
             decimal nLng = (int)(lng * 10000) / (decimal)10000;
 
@@ -70,7 +108,8 @@ namespace NextMasjid.Backend.API.Controllers
         [HttpGet("byPointDetails/{lang}/{lat}/{lng}")]
         public ScoreDetailedModel Get(string lang, double lat, double lng)
         {
-            int value = Backend.Core.Score.SearchPointSql(new Core.GeoPoint(lat, lng), _scoreContext);
+            //    int value = Backend.Core.Score.SearchPointSql(new Core.GeoPoint(lat, lng), _scoreContext);
+            int value = Backend.Core.Score.SearchPoint(Scores, new Core.GeoPoint(lat, lng));
 
             decimal nLat = (int)(lat * 10000) / (decimal)10000;
             decimal nLng = (int)(lng * 10000) / (decimal)10000;
