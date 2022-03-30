@@ -3,4 +3,4 @@
 set -e
 
 cd /opt/backend/
-./NextMasjid.Backend.API --urls http://0.0.0.0:5000
+./NextMasjid.Backend.API --urls https://0.0.0.0:443
