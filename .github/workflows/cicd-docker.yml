@@ -54,9 +54,10 @@ jobs:
             wget -L https://raw.githubusercontent.com/nextmasjid-project/nextmasjid-frontend/main/docker/docker-compose.yml -P /tmp/
             RESULT=$(docker container ps -q -f name=$CONTAINER_NAME)
             if [[ ! -z $RESULT ]]; then             
-              docker-compose -f /tmp/docker-compose.yml rm -svf $SERVICE_NAME 
+              docker-compose -f /tmp/docker-compose.yml rm -sf $SERVICE_NAME 
             fi
-            docker system prune -af      
+            docker system prune -af
+            docker network prune      
             docker-compose -f /tmp/docker-compose.yml up -d $SERVICE_NAME          
             rm -rf /tmp/docker-compose.yml
     
